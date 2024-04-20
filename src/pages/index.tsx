@@ -1,7 +1,17 @@
 import Head from "next/head";
-import Link from "next/link";
+import {useEffect, useState} from "react";
+import {getUsers} from "~/server/actions/user";
+
 
 export default function Home() {
+    const [users, setUsers] = useState([])
+    useEffect(() => {
+        getUsers()
+            .then((data) => {
+            setUsers(data)
+        })
+    } ,[])
+
   return (
     <>
       <Head>
@@ -14,6 +24,12 @@ export default function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
            testing purposes
           </h1>
+            <h2 className="text-2xl font-bold text-white">Users</h2>
+            <ul>
+                {users?.map((user) => (
+                    <li key={user.id}>{user.name}</li>
+                ))}
+            </ul>
         </div>
       </main>
     </>
